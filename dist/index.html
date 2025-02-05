@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <script defer src="main.js"></script>
+</head>
+<body>
+
+    <header>
+        <div>Logo</div>
+        <div>Navigation</div>
+    </header>
+
+    <main>
+        <section>
+            <form id="urlForm" action="javascript:void(0);">
+                <input id="name" name="url" placeholder="Enter URL" required>
+                <button id="submitButton" type="submit">Submit</button>
+            </form>
+        </section>
+
+        <section>
+            <strong>Form Results:</strong>
+            <div id="results"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>This is a footer</p>
+    </footer>
+
+    <script>
+        // Function to validate URL using regex
+        function validateUrl(url) {
+            const regex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+            return regex.test(url);
+        }
+
+        // Form submission event
+        document.getElementById('urlForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Get input value
+            const url = document.getElementById('name').value.trim();
+
+            // Check if input is empty
+            if (!url) {
+                alert("URL cannot be empty!");
+                return;
+            }
+
+            // Validate URL format
+            if (!validateUrl(url)) {
+                alert("Please enter a valid URL!");
+                return;
+            }
+
+            // If the input is valid, show the result
+            document.getElementById('results').textContent = "Valid URL submitted: " + url;
+        });
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then((registration) => {
+                        console.log('Service Worker registered with scope:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+
+</body>
+</html>
